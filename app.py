@@ -24,25 +24,21 @@ def index():
         except ValueError:
             return render_template('index.html', conteudo={'unidade': 'inválido', 'valor': 'Entrada inválida'}, hostname=hostname, ip_address=ip_address)
 
-        # Lógica de conversão
-        if selecao == '1':  # Metro para Quilômetros
-            resultado = valor / 1000
-            unidade = "quilômetros"
-        elif selecao == '2':  # Quilômetros para Metro
-            resultado = valor * 1000
-            unidade = "metros"
-        elif selecao == '3':  # Metro para Milhas
-            resultado = valor / 1609.34
-            unidade = "milhas"
-        elif selecao == '4':  # Milhas para Metro
-            resultado = valor * 1609.34
-            unidade = "metros"
-        elif selecao == '5':  # Metro para Pés
-            resultado = valor * 3.28084
-            unidade = "pés"
-        elif selecao == '6':  # Pés para Metro
-            resultado = valor / 3.28084
-            unidade = "metros"
+        # Dicionário de conversões para um código mais limpo, escalável e "Pythônico"
+        conversions = {
+            '1': {'func': lambda v: v / 1000,    'unit': 'quilômetros'},
+            '2': {'func': lambda v: v * 1000,    'unit': 'metros'},
+            '3': {'func': lambda v: v / 1609.34, 'unit': 'milhas'},
+            '4': {'func': lambda v: v * 1609.34, 'unit': 'metros'},
+            '5': {'func': lambda v: v * 3.28084, 'unit': 'pés'},
+            '6': {'func': lambda v: v / 3.28084, 'unit': 'metros'},
+        }
+
+        conversion_data = conversions.get(selecao)
+
+        if conversion_data:
+            resultado = conversion_data['func'](valor)
+            unidade = conversion_data['unit']
         else:
             resultado = "Inválido"
             unidade = ""
