@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+dockerfrom flask import Flask, render_template, request
 import logging
 import socket  # Módulo para obter informações do servidor
 
